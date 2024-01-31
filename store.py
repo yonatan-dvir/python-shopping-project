@@ -25,7 +25,6 @@ class Store:
 
     # Returns a sorted list of all the items that match the search name (or contain it)
     def search_by_name(self, item_name: str) -> list:
-        # Not include items which are already in the current shopping cart
         matching_names = [cart_item for cart_item in self._items if cart_item.name.__contains__(item_name)]
         matching_names = self.sort_search_results(matching_names)
 
@@ -43,11 +42,11 @@ class Store:
         # Not include items which are already in the current shopping cart
         search_results = [result for result in search_results if result not in self._shopping_cart.cart_items]
         cart_items = self._shopping_cart.cart_items
-        cart_tags = set(tag for item in cart_items for tag in item.hashtags)
+        cart_tags = [tag for item in cart_items for tag in item.hashtags]
         # Order the search results based on the number of common hashtags and lexicographic order of names
-        search_results.sort(key=lambda item: item.name)
-        search_results.sort(key=lambda item: (-len(set(item.hashtags) & cart_tags)))
-        #search_results.sort(key=lambda item: (-len(set(item.hashtags) & cart_tags), item.name))
+        #search_results.sort(key=lambda item: item.name)
+        #search_results.sort(key=lambda item: (-len(set(item.hashtags) & cart_tags)))
+        search_results.sort(key=lambda item: (-sum(tag in item.hashtags for tag in cart_tags), item.name))
 
 
         return search_results
@@ -74,8 +73,8 @@ class Store:
         if len(matching_items) > 1:
             raise TooManyMatchesError(f"Multiple items match the name '{item_name}'. Provide a more specific name.")
         else:
-            item_to_remove = matching_items[0].name
-            self._shopping_cart.remove_item(item_to_remove)
+            if len(matching_items)==0: self._shopping_cart.remove_item(item_name)
+            else: self._shopping_cart.remove_item(matching_items[0].name)
 
     def checkout(self) -> int:
         return self._shopping_cart.get_subtotal()
