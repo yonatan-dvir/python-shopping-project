@@ -79,6 +79,7 @@ class Store:
     def checkout(self) -> int:
         return self._shopping_cart.get_subtotal()
 
-    def print_cart(self):
+    # Provides a string representation of the store items
+    def __str__(self):
         for item in self._items:
             print(item.name)
