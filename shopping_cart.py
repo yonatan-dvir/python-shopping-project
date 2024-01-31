@@ -9,7 +9,7 @@ class ShoppingCart:
 
     def add_item(self, item: Item):
         # Check if an item with the same name already exists
-        for cart_item in self.items:
+        for cart_item in self.cart_items:
             # If yes, raise an ItemAlreadyExistsError
             if cart_item.name == item.name:
                 raise ItemAlreadyExistsError(f"Item '{item.name}' already exists in the shopping cart.")
@@ -19,11 +19,11 @@ class ShoppingCart:
 
     def remove_item(self, item_name: str):
         # Check if an item with the same name already exists
-        for cart_item in self.items:
+        for cart_item in self.cart_items:
             # If yes, remove it from the shopping cart list
             if cart_item.name == item_name:
                 self.cart_items.remove(cart_item)
-                break;
+                return;
 
         # If not, raise an ItemNotExistError
         raise ItemNotExistError(f"Item '{item_name}' does not exist in the shopping cart.")

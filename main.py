@@ -17,24 +17,44 @@ def read_input():
     args = line.split(' ')
     return args[0], ' '.join(args[1:])
 
+def display_search_results(results):
+    print('Search results:')
+    for item in results:
+        print(f"- {item.name}")
+
+def display_shopping_cart(cart):
+    print('Current shopping cart:')
+    for item in cart:
+        print(f"- {item.name}")
 
 def main():
     store = Store(ITEMS_FILE)
     action, params = read_input()
+
     while action != 'exit':
         if action not in POSSIBLE_ACTIONS:
             print('No such action...')
             continue
+
         if action == 'checkout':
             print(f'The total of the purchase is {store.checkout()}.')
             print('Thank you for shopping with us!')
             return
-        if action == 'exit':
-            print('Goodbye!')
-            return
-        # else make the action work (Fix this comment!!!!)
-        getattr(store, action)(params)
+
+        if action == 'search_by_name' or action == 'search_by_hashtag':
+            results = getattr(store, action)(params)
+            display_search_results(results)
+        else:
+            try:
+                getattr(store, action)(params)
+            except Exception as e:
+                print(f"Error: {e}")
+
+        display_shopping_cart(store._shopping_cart.cart_items)
         action, params = read_input()
+
+
+
 
 
 if __name__ == '__main__':
