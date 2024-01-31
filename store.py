@@ -1,4 +1,6 @@
 import yaml
+
+from errors import ItemNotExistError, TooManyMatchesError
 from item import Item
 from shopping_cart import ShoppingCart
 
@@ -43,17 +45,32 @@ class Store:
         # Order the search results based on the number of common hashtags and lexicographic order of names
         search_results.sort(key=lambda item: (len(set(item.hashtags) & cart_tags), item.name))
 
+    # Adds an item with the given name to the customer’s shopping cart.
+    # If no such item exists, raises ItemNotExistError.
+    # If there are multiple items matching the given name, raises TooManyMatchesError.
+    # If the given item is already in the shopping cart, raises ItemAlreadyExistsError.
     def add_item(self, item_name: str):
-        # TODO: Complete
-        pass
+        matching_items = [item for item in self.items if item_name in self._shopping_cart.cart_items]
+        if not matching_items:
+            raise ItemNotExistError(f"No item with name '{item_name}' exists.")
+        elif len(matching_items) > 1:
+            raise TooManyMatchesError(f"Multiple items match the name '{item_name}'. Provide a more specific name.")
+        else:
+            item_to_add = matching_items[0]
+            self.shopping_cart.add_item(item_to_add)
 
+    # Removes an item with the given name from the customer’s shopping cart.
+    # if no such item exists, raises ItemNotExistError.
+    # If there are multiple items matching the given name, raises TooManyMatchesError.
     def remove_item(self, item_name: str):
-        # TODO: Complete
-        pass
+        matching_items = [item for item in self.items if item_name in self._shopping_cart.cart_items]
+        if len(matching_items) > 1:
+            raise TooManyMatchesError(f"Multiple items match the name '{item_name}'. Provide a more specific name.")
+        else:
+            self.shopping_cart.remove_item(item_name)
 
     def checkout(self) -> int:
-        # TODO: Complete
-        pass
+        return self._shopping_cart.get_subtotal()
 
     def print_cart(self):
         for item in self._items:
