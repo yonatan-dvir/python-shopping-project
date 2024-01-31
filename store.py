@@ -21,8 +21,8 @@ class Store:
         return self._items
 
     def search_by_name(self, item_name: str) -> list:
-        # TODO: Complete
-        pass
+        matching_names = [cart_item for cart_item in self._items if cart_item.name.__contains__(item_name)]
+        return matching_names
 
     def search_by_hashtag(self, hashtag: str) -> list:
         # TODO: Complete
@@ -39,3 +39,7 @@ class Store:
     def checkout(self) -> int:
         # TODO: Complete
         pass
+
+    def print_cart(self):
+        for item in self._items:
+            print(item.name)

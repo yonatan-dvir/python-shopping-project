@@ -35,6 +35,8 @@ def main():
         # else make the action work (Fix this comment!!!!)
         getattr(store, action)(params)
         action, params = read_input()
+        print("HERE")
+        print(store.search_by_name("Cart")[1])
 
 
 if __name__ == '__main__':
