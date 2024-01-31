@@ -57,7 +57,7 @@ class Store:
     # If there are multiple items matching the given name, raises TooManyMatchesError.
     # If the given item is already in the shopping cart, raises ItemAlreadyExistsError.
     def add_item(self, item_name: str):
-        matching_items = [item for item in self.get_items()]
+        matching_items = [item for item in self.get_items() if item.name.__contains__(item_name)]
         if not matching_items:
             raise ItemNotExistError(f"No item with name '{item_name}' exists.")
         elif len(matching_items) > 1:
@@ -70,11 +70,12 @@ class Store:
     # if no such item exists, raises ItemNotExistError.
     # If there are multiple items matching the given name, raises TooManyMatchesError.
     def remove_item(self, item_name: str):
-        matching_items = [item for item in self.search_by_name(item_name)]
+        matching_items = [item for item in self._shopping_cart.cart_items if item.name.__contains__(item_name)]
         if len(matching_items) > 1:
             raise TooManyMatchesError(f"Multiple items match the name '{item_name}'. Provide a more specific name.")
         else:
-            self._shopping_cart.remove_item(item_name)
+            item_to_remove = matching_items[0].name
+            self._shopping_cart.remove_item(item_to_remove)
 
     def checkout(self) -> int:
         return self._shopping_cart.get_subtotal()
