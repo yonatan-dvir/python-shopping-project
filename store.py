@@ -20,13 +20,15 @@ class Store:
     def get_items(self) -> list:
         return self._items
 
+    # Returns a sorted list of all the items that match the search name (or contain it)
     def search_by_name(self, item_name: str) -> list:
         matching_names = [cart_item for cart_item in self._items if cart_item.name.__contains__(item_name)]
         return matching_names
 
+    # Returns a sorted list of all the items matching the searches hashtag
     def search_by_hashtag(self, hashtag: str) -> list:
-        # TODO: Complete
-        pass
+        matching_hashtags = [cart_item for cart_item in self._items if cart_item.hashtags.__contains__(hashtag)]
+        return matching_hashtags
 
     def add_item(self, item_name: str):
         # TODO: Complete
