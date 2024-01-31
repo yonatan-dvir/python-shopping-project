@@ -32,8 +32,8 @@ def main():
         if action == 'exit':
             print('Goodbye!')
             return
+        # else make the action work (Fix this comment!!!!)
         getattr(store, action)(params)
-    
         action, params = read_input()
 
 

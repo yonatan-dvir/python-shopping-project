@@ -1,5 +1,4 @@
 import yaml
-
 from item import Item
 from shopping_cart import ShoppingCart
 
