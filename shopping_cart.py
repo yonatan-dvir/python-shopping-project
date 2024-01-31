@@ -28,6 +28,7 @@ class ShoppingCart:
         # If not, raise an ItemNotExistError
         raise ItemNotExistError(f"Item '{item_name}' does not exist in the shopping cart.")
 
+    # Returns the subtotal price of all the items currently in the shopping cart
     def get_subtotal(self) -> int:
-        # TODO: Complete
-        pass
+        subtotal = sum(cart_item.price for cart_item in self.cart_items)
+        return subtotal
